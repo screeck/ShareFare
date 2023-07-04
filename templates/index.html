@@ -5,15 +5,44 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes count-up {
+            from { opacity: 0; transform: translateY(50%); }
+            to { opacity: 1; transform: translateY(0%); }
+        }
+    </style>
+    <!-- <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const counterElement = document.getElementById('counter');
+            let count = 0;
 
+            setInterval(() => {
+                count++;
+                counterElement.textContent = count;
+                counterElement.classList.add('animate-count-up');
+                setTimeout(() => {
+                    counterElement.classList.remove('animate-count-up');
+                }, 1000);
+            }, 2000);
+        });
+    </script> -->
 </head>
 <body>
     <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
-        <a href="/" class="text-xl font-semibold">Sharefare</a>
+        <a href="/" class="text-3xl font-semibold">ShareFare</a>
         <div class="space-x-6">
-           <a href="#" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a> 
-           <a href="#" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a> 
+           <a href="register.html" class="px-6 py-3 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700">Sign up</a> 
+           <a href="login.html" class="px-6 py-3 text-lg font-semibold bg-gray-500 text-white rounded-xl hover:bg-gray-700">Log in</a> 
         </div>
     </nav>
+    <div class="flex flex-col items-center bg-gray-100 py-4">
+        <h1 class="text-3xl font-semibold">Together Against Food Waste: Share and Care</h1>
+    </div>
+    <div class="flex justify-center items-center bg-gray-100 py-4">
+        <p class="text-xl text-gray-500">We saved that many products: </p>
+    </div>
+    <div class="flex justify-center items-center bg-gray-100 py-4">
+        <span class="text-xl" id="counter">2875403</span>
+    </div>
 </body>
 </html>
