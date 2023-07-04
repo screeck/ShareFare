@@ -1,0 +1,1 @@
+web: gunicorn flaskapp:app --worker-class gevent --worker-connections 1000
