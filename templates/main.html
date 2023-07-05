@@ -30,16 +30,16 @@
             text-align: center;
         }
 
-        .product-row {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
+        .products {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-gap: 20px;
         }
 
         .product {
             border: 1px solid #ccc;
             padding: 10px;
+            text-align: center;
         }
     </style>
     <script>
@@ -72,26 +72,19 @@
         </div>
     </nav>
 
-  <!-- Product Listings Section -->
+<!-- Product Listings Section -->
 <div class="product-listings">
     <h2>Product Listings</h2>
     <div class="products">
-        <div class="product-row">
-            {% set counter = 0 %}
-            {% for product in products %}
-                <div class="product">
-                    {% for image_url in product[3] %}
-                        <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
-                    {% endfor %}
-                    <h3>{{ product[1] }}</h3>
-                    <p>{{ product[2] }}</p>
-                </div>
-                {% set counter = counter + 1 %}
-                {% if counter % 4 == 0 %}
-                    </div><div class="product-row">
-                {% endif %}
-            {% endfor %}
-        </div>
+        {% for product in products %}
+            <div class="product">
+                {% for image_url in product[3] %}
+                    <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
+                {% endfor %}
+                <h3>{{ product[1] }}</h3>
+                <p>{{ product[2] }}</p>
+            </div>
+        {% endfor %}
     </div>
 </div>
 
