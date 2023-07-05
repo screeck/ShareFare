@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session, url_for
 import psycopg2
+import logging
 
 app = Flask(__name__)
 app.secret_key = 'jsnbfdbglsirvledjeoantoa2t472fn38f'
@@ -91,7 +92,7 @@ def login():
             (email, password)
         )
         result = cursor.fetchone()
-
+        logger.info(f"result: {result}")
         # Close the database connection
         cursor.close()
         conn.close()
