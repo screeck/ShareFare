@@ -94,10 +94,13 @@ def login():
         cursor.close()
         conn.close()
 
-        if result > 0:
+        if result is not None:
+            # Authentication successful, retrieve the first name
             first_name = result[0]
-            # Authentication successful, redirect to the main page
+
+            # Set the session variable
             session['first_name'] = first_name
+
             return redirect('/main')
         else:
             # Authentication failed, return an error message
