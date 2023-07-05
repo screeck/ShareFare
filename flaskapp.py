@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect
-
 import psycopg2
+
 app = Flask(__name__)
 
 db_host = 'app-2b62167e-79b3-4a11-876c-ba8bc5ab7bb5-do-user-14289936-0.b.db.ondigitalocean.com'
@@ -14,10 +14,12 @@ db_password = 'AVNS_BlevRoe2edlQnO-TME1'
 def home():
     return render_template('index.html')
 
+
 # Route for displaying the registration form
 @app.route('/register', methods=['GET'])
 def display_registration_form():
     return render_template('register.html')
+
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -37,6 +39,16 @@ def register():
         sslmode='require'
     )
     cursor = conn.cursor()
+
+    # Check if the email already exists in the database
+    cursor.execute("SELECT COUNT(*) FROM users WHERE email = %s", (email,))
+    result = cursor.fetchone()[0]
+
+    if result > 0:
+        # Email already exists, return an error message
+        cursor.close()
+        conn.close()
+        return "Registration failed. An account with this email already exists."
 
     # Insert the user data into the database
     cursor.execute(
@@ -91,9 +103,11 @@ def login():
 
     return render_template('login.html')
 
+
 @app.route('/main')
 def main():
     return render_template('main.html')
+
 
 if __name__ == '__main__':
     app.run(debug=True)
