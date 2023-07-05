@@ -22,6 +22,10 @@
         .dropdown-menu.active {
             display: block; /* Show the dropdown menu when active class is added */
         }
+        .shrink-image {
+            width: 100px; /* Adjust the width value as needed */
+            height: auto; /* The height will be adjusted automatically to maintain the aspect ratio */
+        }
     </style>
     <script>
         document.addEventListener('click', function(event) {
@@ -60,7 +64,7 @@
             {% for product in products %}
                 <div class="product">
                     {% for image_url in product[3] %}
-                        <img src="{{ image_url }}" alt="Product Image">
+                        <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
                     {% endfor %}
                     <h3>{{ product[1] }}</h3>
                     <p>{{ product[2] }}</p>
