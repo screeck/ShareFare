@@ -136,14 +136,29 @@ def main():
     cursor = conn.cursor()
 
     # Retrieve the product data from the database
-    cursor.execute("SELECT id, title, date FROM products")
-    products = cursor.fetchall()
+    cursor.execute("SELECT p.id, p.title, p.date, pi.image_url FROM products p LEFT JOIN product_images pi ON p.id = pi.product_id")
+    products = []
+    product = None
+    for row in cursor.fetchall():
+        if product is None or product[0] != row[0]:
+            # Create a new product object
+            if product is not None:
+                products.append(product)
+            product = [row[0], row[1], row[2], []]  # [id, title, date, images]
+        if row[3]:
+            # Append the image URL to the product's images list
+            product[3].append(row[3])
+
+    if product is not None:
+        products.append(product)
 
     # Close the database connection
     cursor.close()
     conn.close()
+
     first_name = session.get('first_name')
-    return render_template('main.html', first_name=first_name)
+    return render_template('main.html', first_name=first_name, products=products)
+
 
 @app.route('/logout')
 def logout():
