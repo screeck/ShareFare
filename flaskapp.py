@@ -88,7 +88,7 @@ def login():
             "SELECT COUNT(*) FROM users WHERE email = %s AND password = %s",
             (email, password)
         )
-        result = cursor.fetchone()[0]
+        result = cursor.fetchone()
 
         # Close the database connection
         cursor.close()
@@ -101,7 +101,7 @@ def login():
             # Set the session variable
             session['first_name'] = first_name
 
-            return redirect('/main')
+            return redirect(url_for('/main', firstName=first_name))
         else:
             # Authentication failed, return an error message
             return "Authentication failed. Please check your email and password."
