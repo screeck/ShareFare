@@ -26,6 +26,21 @@
             width: 150px; /* Adjust the width value as needed */
             height: auto; /* The height will be adjusted automatically to maintain the aspect ratio */
         }
+        .product-listings {
+            text-align: center;
+        }
+
+        .product-row {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
     </style>
     <script>
         document.addEventListener('click', function(event) {
@@ -58,9 +73,10 @@
     </nav>
 
     <!-- Product Listings Section -->
-    <div class="product-listings">
-        <h2>Product Listings</h2>
-        <div class="products">
+<div class="product-listings">
+    <h2>Product Listings</h2>
+    <div class="products">
+        <div class="product-row">
             {% for product in products %}
                 <div class="product">
                     {% for image_url in product[3] %}
@@ -72,5 +88,6 @@
             {% endfor %}
         </div>
     </div>
+</div>
 </body>
 </html>
