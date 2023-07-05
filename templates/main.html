@@ -32,11 +32,11 @@
 
         .products {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            grid-gap: 5px;
-            padding: 0 100px; /* Add left and right padding */
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 20px;
+            padding: 0 20px; /* Add left and right padding */
             justify-items: center; /* Center the items horizontally within each column */
-        }
+            }
 
         .product {
             border: 1px solid #ccc;
