@@ -31,18 +31,31 @@
         }
 
         .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            grid-gap: 20px;
-            padding: 0 20px; /* Add left and right padding */
-            justify-items: center; /* Center the items horizontally within each column */
-            }
+        display: grid;
+        grid-template-columns: repeat(4, minmax(200px, 1fr));
+        grid-gap: 20px;
+        padding: 0 20px; /* Add left and right padding */
+        justify-items: center; /* Center the items horizontally within each column */
+        }
+
+        @media screen and (max-width: 800px) {
+        .products {
+            grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Show maximum of 3 products per column on smaller screens */
+        }
+        }
+
+        @media screen and (max-width: 600px) {
+        .products {
+            grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Show maximum of 2 products per column on even smaller screens */
+        }
+        }
 
         .product {
-            border: 1px solid #ccc;
-            padding: 10px;
-            text-align: center;
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: center;
         }
+
     </style>
     <script>
         document.addEventListener('click', function(event) {
