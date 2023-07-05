@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, session, url_for
+from flask_session import Session
 import psycopg2
 import logging
 
@@ -8,6 +9,8 @@ logger.setLevel(logging.INFO)
 
 app = Flask(__name__)
 app.secret_key = 'jsnbfdbglsirvledjeoantoa2t472fn38f'
+app.config['SESSION_TYPE'] = 'filesystem' 
+Session(app)
 
 
 db_host = 'app-2b62167e-79b3-4a11-876c-ba8bc5ab7bb5-do-user-14289936-0.b.db.ondigitalocean.com'
