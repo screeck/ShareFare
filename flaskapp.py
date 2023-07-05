@@ -103,10 +103,17 @@ def login():
 
         if result is not None:
             # Authentication successful, retrieve the first name
-            first_name = result[0]
+            cursor.execute(
+                "SELECT first_name FROM users WHERE email = %s",
+                (email,)
+            )
+            first_name = cursor.fetchone()[0]
 
             # Set the session variable
             session['first_name'] = first_name
+
+            cursor.close()
+            conn.close()
 
             return redirect(url_for('main', firstName=first_name))
         else:
