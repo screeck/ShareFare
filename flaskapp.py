@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, session
 import psycopg2
 
 app = Flask(__name__)
@@ -95,7 +95,9 @@ def login():
         conn.close()
 
         if result > 0:
+            first_name = result[0]
             # Authentication successful, redirect to the main page
+            session['first_name'] = first_name
             return redirect('/main')
         else:
             # Authentication failed, return an error message
@@ -106,7 +108,8 @@ def login():
 
 @app.route('/main')
 def main():
-    return render_template('main.html')
+    first_name = session.get('first_name')
+    return render_template('main.html', first_name=first_name)
 
 
 if __name__ == '__main__':
