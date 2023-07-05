@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect, session
 import psycopg2
 
 app = Flask(__name__)
+app.secret_key = 'jsnbfdbglsirvledjeoantoa2t472fn38f'
+
 
 db_host = 'app-2b62167e-79b3-4a11-876c-ba8bc5ab7bb5-do-user-14289936-0.b.db.ondigitalocean.com'
 db_port = '25060'
