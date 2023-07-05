@@ -98,8 +98,6 @@ def login():
         result = cursor.fetchone()
         logger.info(f"result: {result}")
         # Close the database connection
-        cursor.close()
-        conn.close()
 
         if result is not None:
             # Authentication successful, retrieve the first name
