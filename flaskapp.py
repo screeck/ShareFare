@@ -52,8 +52,42 @@ def register():
     return "User registered successfully!"
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+        # Retrieve form data from the request
+        email = request.form['email']
+        password = request.form['password']
+
+        # Connect to the PostgreSQL database
+        conn = psycopg2.connect(
+            host=db_host,
+            port=db_port,
+            dbname=db_name,
+            user=db_user,
+            password=db_password,
+            sslmode='require'
+        )
+        cursor = conn.cursor()
+
+        # Execute the database query to check user credentials
+        cursor.execute(
+            "SELECT COUNT(*) FROM users WHERE email = %s AND password = %s",
+            (email, password)
+        )
+        result = cursor.fetchone()[0]
+
+        # Close the database connection
+        cursor.close()
+        conn.close()
+
+        if result > 0:
+            # Authentication successful, redirect to the main page
+            return redirect('/main')
+        else:
+            # Authentication failed, return an error message
+            return "Authentication failed. Please check your email and password."
+
     return render_template('login.html')
 
 @app.route('/main')
