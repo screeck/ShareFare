@@ -72,28 +72,28 @@
         </div>
     </nav>
 
-  <!-- Product Listings Section -->
+ <!-- Product Listings Section -->
 <div class="product-listings">
     <h2>Product Listings</h2>
     <div class="products">
-        <div class="product-row">
-            {% set counter = 0 %}
-            {% for product in products %}
-                <div class="product">
-                    {% for image_url in product[3] %}
-                        <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
-                    {% endfor %}
-                    <h3>{{ product[1] }}</h3>
-                    <p>{{ product[2] }}</p>
+        {% for index, product in enumerate(products) %}
+            {% if index % 4 == 0 %}
+                <div class="product-row">
+            {% endif %}
+            <div class="product">
+                {% for image_url in product[3] %}
+                    <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
+                {% endfor %}
+                <h3>{{ product[1] }}</h3>
+                <p>{{ product[2] }}</p>
+            </div>
+            {% if (index + 1) % 4 == 0 or (index + 1) == products|length %}
                 </div>
-                {% set counter = counter + 1 %}
-                {% if counter % 4 == 0 %}
-                    </div><div class="product-row">
-                {% endif %}
-            {% endfor %}
-        </div>
+            {% endif %}
+        {% endfor %}
     </div>
 </div>
+
 
 </body>
 </html>
