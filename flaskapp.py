@@ -2,6 +2,10 @@ from flask import Flask, render_template, request, redirect, session, url_for
 import psycopg2
 import logging
 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.INFO)
+
+
 app = Flask(__name__)
 app.secret_key = 'jsnbfdbglsirvledjeoantoa2t472fn38f'
 
