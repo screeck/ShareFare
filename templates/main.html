@@ -52,5 +52,19 @@
             </div>
         </div>
     </nav>
+
+    <!-- Product Listings Section -->
+    <div class="product-listings">
+        <h2>Product Listings</h2>
+        <div class="products">
+            {% for product in products %}
+                <div class="product">
+                    <img src="{{ product.image_url }}" alt="Product Image">
+                    <h3>{{ product.title }}</h3>
+                    <p>{{ product.date }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 </body>
 </html>

@@ -124,6 +124,24 @@ def login():
 
 @app.route('/main')
 def main():
+    # Connect to the PostgreSQL database
+    conn = psycopg2.connect(
+        host=db_host,
+        port=db_port,
+        dbname=db_name,
+        user=db_user,
+        password=db_password,
+        sslmode='require'
+    )
+    cursor = conn.cursor()
+
+    # Retrieve the product data from the database
+    cursor.execute("SELECT id, title, date FROM products")
+    products = cursor.fetchall()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
     first_name = session.get('first_name')
     return render_template('main.html', first_name=first_name)
 
