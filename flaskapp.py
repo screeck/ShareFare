@@ -103,7 +103,7 @@ def login():
             # Set the session variable
             session['first_name'] = first_name
 
-            return redirect(url_for('/main', firstName=first_name))
+            return redirect(url_for('main', firstName=first_name))
         else:
             # Authentication failed, return an error message
             return "Authentication failed. Please check your email and password."
