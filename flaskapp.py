@@ -160,6 +160,7 @@ def main():
     return render_template('main.html', first_name=first_name, products=products)
 
 
+
 @app.route('/logout')
 def logout():
     # Clear the session data

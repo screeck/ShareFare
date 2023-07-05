@@ -59,11 +59,11 @@
         <div class="products">
             {% for product in products %}
                 <div class="product">
-                    {% for image in product.images %}
-                        <img src="{{ image.image_url }}" alt="Product Image">
+                    {% for image_url in product[3] %}
+                        <img src="{{ image_url }}" alt="Product Image">
                     {% endfor %}
-                    <h3>{{ product.title }}</h3>
-                    <p>{{ product.date }}</p>
+                    <h3>{{ product[1] }}</h3>
+                    <p>{{ product[2] }}</p>
                 </div>
             {% endfor %}
         </div>
