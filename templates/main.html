@@ -72,14 +72,13 @@
         </div>
     </nav>
 
- <!-- Product Listings Section -->
+<!-- Product Listings Section -->
 <div class="product-listings">
     <h2>Product Listings</h2>
     <div class="products">
-        {% for index, product in enumerate(products) %}
-            {% if index % 4 == 0 %}
-                <div class="product-row">
-            {% endif %}
+        {% set counter = 0 %}
+        <div class="product-row">
+        {% for product in products %}
             <div class="product">
                 {% for image_url in product[3] %}
                     <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
@@ -87,10 +86,13 @@
                 <h3>{{ product[1] }}</h3>
                 <p>{{ product[2] }}</p>
             </div>
-            {% if (index + 1) % 4 == 0 or (index + 1) == products|length %}
+            {% set counter = counter + 1 %}
+            {% if counter % 4 == 0 and not loop.last %}
                 </div>
+                <div class="product-row">
             {% endif %}
         {% endfor %}
+        </div>
     </div>
 </div>
 
