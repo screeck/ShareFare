@@ -28,36 +28,24 @@
         }
         .product-listings {
             text-align: center;
+            padding: 0 20px; /* Add left and right padding */
+            margin: 0 auto; /* Center the product listings section */
+            max-width: 1200px; /* Set a maximum width for the product listings section */
         }
 
         .products {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(200px, 1fr));
-  grid-column-gap: 20px;
-  padding: 0 20px; /* Add left and right padding */
-  justify-items: center; /* Center the items horizontally within each column */
-}
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 20px;
+            justify-items: center;
+        }
 
-@media screen and (max-width: 800px) {
-  .products {
-    grid-template-columns: repeat(3, minmax(200px, 1fr)); /* Show maximum of 3 products per column on smaller screens */
-  }
-}
-
-@media screen and (max-width: 600px) {
-  .products {
-    grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Show maximum of 2 products per column on even smaller screens */
-  }
-}
-
-.product {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-  margin: 10px; /* Add margin to create a fixed gap between products */
-}
-
-
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            margin: 10px;
+        }
     </style>
     <script>
         document.addEventListener('click', function(event) {
@@ -89,21 +77,21 @@
         </div>
     </nav>
 
-<!-- Product Listings Section -->
-<div class="product-listings">
-    <h2>Product Listings</h2>
-    <div class="products">
-        {% for product in products %}
-            <div class="product">
-                {% for image_url in product[3] %}
-                    <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
-                {% endfor %}
-                <h3>{{ product[1] }}</h3>
-                <p>{{ product[2] }}</p>
-            </div>
-        {% endfor %}
+    <!-- Product Listings Section -->
+    <div class="product-listings">
+        <h2>Product Listings</h2>
+        <div class="products">
+            {% for product in products %}
+                <div class="product">
+                    {% for image_url in product[3] %}
+                        <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
+                    {% endfor %}
+                    <h3>{{ product[1] }}</h3>
+                    <p>{{ product[2] }}</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-</div>
 
 </body>
 </html>
