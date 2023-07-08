@@ -113,10 +113,14 @@ def login():
                 "SELECT first_name FROM users WHERE email = %s",
                 (email,)
             )
-            first_name = cursor.fetchone()[0]
+            first_name = result[1]
+            id = result[2]
+            
+            session['first_name'] = first_name
+            session['user_id'] = id
+
 
             # Set the session variable
-            session['first_name'] = first_name
 
             cursor.close()
             conn.close()
@@ -218,7 +222,7 @@ def post_product():
         # Insert the product data into the database
         cursor.execute(
             "INSERT INTO products (user_id, title, date) VALUES (%s, %s, %s) RETURNING id",
-            (session['id'], title, expiry_date)
+            (session['user_id'], title, expiry_date)
         )
         product_id = cursor.fetchone()[0]
 
