@@ -1,8 +1,7 @@
 from flask import Flask, render_template, request, redirect, session, url_for
-
 import psycopg2
 import logging
-
+import requests
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -172,7 +171,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-import requests
 
 @app.route('/post-product', methods=['POST'])
 def post_product():
