@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, requests, redirect, session, url_for
 import psycopg2
 import logging
 
@@ -15,6 +15,7 @@ db_port = '25060'
 db_name = 'defaultdb'
 db_user = 'doadmin'
 db_password = 'AVNS_BlevRoe2edlQnO-TME1'
+
 
 
 @app.route('/')
@@ -188,7 +189,7 @@ def post_product():
 
     try:
         # Upload the file to DigitalOcean Spaces
-        response = request.put(
+        response = requests.put(
             f"https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/{file.filename}",
             data=file,
             headers={
