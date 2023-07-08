@@ -169,5 +169,75 @@ def logout():
     # Redirect the user to the index page
     return redirect(url_for('home'))
 
+
+@app.route('/post-product', methods=['POST'])
+def post_product():
+    # Retrieve form data from the request
+    title = request.form['title']
+    expiry_date = request.form['expiryDate']
+
+    # Check if a file was uploaded
+    if 'productImage' not in request.files:
+        return "No file uploaded"
+
+    file = request.files['productImage']
+
+    # Check if the file is empty
+    if file.filename == '':
+        return "Empty filename"
+
+    try:
+        # Upload the file to DigitalOcean Spaces
+        response = request.put(
+            f"https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/{file.filename}",
+            data=file,
+            headers={
+                "Content-Type": file.content_type,
+                "Authorization": "DO00EJGZ8BLUKFHTTLPR"
+            }
+        )
+
+        # Check the response status code
+        if response.status_code != 200:
+            return f"Upload failed: {response.text}"
+
+        # Get the URL of the uploaded file
+        image_url = f"https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/{file.filename}"
+
+        # Connect to the PostgreSQL database
+        conn = psycopg2.connect(
+            host=db_host,
+            port=db_port,
+            dbname=db_name,
+            user=db_user,
+            password=db_password,
+            sslmode='require'
+        )
+        cursor = conn.cursor()
+
+        # Insert the product data into the database
+        cursor.execute(
+            "INSERT INTO products (user_id, title, date) VALUES (%s, %s, %s) RETURNING id",
+            (session['user_id'], title, expiry_date)
+        )
+        product_id = cursor.fetchone()[0]
+
+        # Insert the image URL into the product_images table
+        cursor.execute(
+            "INSERT INTO product_images (product_id, image_url) VALUES (%s, %s)",
+            (product_id, image_url)
+        )
+
+        # Commit the changes and close the connection
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        return redirect(url_for('main'))
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
