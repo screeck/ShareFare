@@ -3,7 +3,7 @@ import psycopg2
 import logging
 import requests
 import boto3
-
+import uuid
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
