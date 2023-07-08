@@ -2,6 +2,9 @@ from flask import Flask, render_template, request, redirect, session, url_for
 import psycopg2
 import logging
 import requests
+import boto3
+
+
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.INFO)
 
@@ -16,6 +19,9 @@ db_name = 'defaultdb'
 db_user = 'doadmin'
 db_password = 'AVNS_BlevRoe2edlQnO-TME1'
 
+s3 = boto3.client('s3',
+                  aws_access_key_id='AKIAXOYQP4DYMP32MCXC',
+                  aws_secret_access_key='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')
 
 
 @app.route('/')
@@ -189,25 +195,14 @@ def post_product():
         return "Empty filename"
 
     try:
-        # Set up the request headers
-        headers = {
-            'Authorization': 'DO00EJGZ8BLUKFHTTLPR',
-            'Content-Type': file.content_type
-        }
+        # Generate a unique filename for the uploaded file
+        filename = f"product_images/{uuid.uuid4().hex}_{file.filename}"
 
-        # Upload the file to DigitalOcean Spaces
-        response = requests.post(
-        f'https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/{file.filename}',
-        headers=headers,
-        data=file.read()
-        )
+        # Upload the file to AWS S3
+        s3.upload_fileobj(file, 'sharefare', filename)
 
-        # Check the response status code
-        if response.status_code != 200:
-            return f"Upload failed: {response.text}"
-
-        # Get the URL of the uploaded file
-        image_url = response.json()['url']
+        # Create the URL of the uploaded file
+        image_url = f"https://sharefare.s3.amazonaws.com/{filename}"
 
         # Connect to the PostgreSQL database
         conn = psycopg2.connect(
