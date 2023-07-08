@@ -171,6 +171,8 @@ def logout():
     return redirect(url_for('home'))
 
 
+import requests
+
 @app.route('/post-product', methods=['POST'])
 def post_product():
     # Retrieve form data from the request
@@ -188,14 +190,17 @@ def post_product():
         return "Empty filename"
 
     try:
+        # Set up the request headers
+        headers = {
+            'Authorization': 'DO00EJGZ8BLUKFHTTLPR',
+            'Content-Type': file.content_type
+        }
+
         # Upload the file to DigitalOcean Spaces
-        response = requests.put(
-            f"https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/{file.filename}",
-            data=file,
-            headers={
-                "Content-Type": file.content_type,
-                "Authorization": "DO00EJGZ8BLUKFHTTLPR"
-            }
+        response = requests.post(
+            'https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/',
+            headers=headers,
+            files={'file': (file.filename, file.stream, file.content_type)}
         )
 
         # Check the response status code
@@ -203,7 +208,7 @@ def post_product():
             return f"Upload failed: {response.text}"
 
         # Get the URL of the uploaded file
-        image_url = f"https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/{file.filename}"
+        image_url = response.json()['url']
 
         # Connect to the PostgreSQL database
         conn = psycopg2.connect(
