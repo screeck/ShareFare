@@ -197,9 +197,9 @@ def post_product():
 
         # Upload the file to DigitalOcean Spaces
         response = requests.post(
-            'https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/',
-            headers=headers,
-            files={'file': (file.filename, file.stream, file.content_type)}
+        f'https://sharefarebucket.fra1.digitaloceanspaces.com/product_images/{file.filename}',
+        headers=headers,
+        data=file.read()
         )
 
         # Check the response status code
