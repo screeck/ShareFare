@@ -26,7 +26,83 @@
             text-align: center;
             margin: 10px;
         }
+        .list-product-button {
+            margin-top: 20px;
+        }
+          /* CSS styles... */
+        .popup-container {
+            display: none; /* Initially hide the popup container */
+        }
+
+        .popup-container.active {
+            display: block; /* Show the popup container when active class is added */
+        }
+
+        .close-icon {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .popup-content {
+            padding: 80px; /* Adjust the padding as desired */
+        }
+        .upload-image {
+            display: inline-block;
+            cursor: pointer;
+        }
+        .upload-image img {
+            width: 400px; /* Adjust the width to make the image smaller */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        .upload-image input[type="file"] {
+            display: none;
+        }
     </style>
+    <script>
+        document.addEventListener('click', function(event) {
+            var dropdown = document.getElementById('dropdownMenu');
+            var dropdownToggle = document.getElementById('dropdownToggle');
+            var isClickInside = dropdown.contains(event.target) || dropdownToggle.contains(event.target);
+            if (!isClickInside) {
+                dropdown.classList.remove('active');
+            }
+        });
+
+        function toggleDropdown() {
+            var dropdown = document.getElementById('dropdownMenu');
+            dropdown.classList.toggle('active');
+        }
+        function showPopup() {
+            var popupContainer = document.getElementById('popupContainer');
+            popupContainer.classList.add('active');
+        }
+
+        function closePopup() {
+            var popupContainer = document.getElementById('popupContainer');
+            popupContainer.classList.remove('active');
+        }
+        function triggerFileInput() {
+            document.getElementById('productImage').click();
+        }
+        function displaySelectedImage(event) {
+        const fileInput = event.target;
+        const selectedImage = document.getElementById('selectedImage');
+
+        if (fileInput.files && fileInput.files[0]) {
+            const reader = new FileReader();
+
+            reader.onload = function (e) {
+                selectedImage.src = e.target.result;
+            };
+
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    }
+    </script>
 </head>
 <body>
     <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
@@ -62,5 +138,33 @@
             {% endfor %}
         </div>
     </div>
+
+    <!-- Product Posting Form Popup -->
+<div id="popupContainer" class="popup-container">
+    <div class="px-10 py-8 fixed inset-0 flex items-center justify-center">
+        <div class="px-10 py-8 bg-white p-12 rounded-md shadow-md relative popup-content">
+            <img src="static/x.png" alt="Close" class="close-icon" onclick="closePopup()">
+            <h1 class="text-3xl font-semibold mb-6">Post a Product</h1>
+            <form action="/post-product" method="POST" enctype="multipart/form-data">
+                <div class="mb-4">
+                    <label for="productImage" class="block text-gray-700">Product Image (up to 4)</label>
+                    <label class="upload-image">
+                        <img id="selectedImage" src="static/addimage.png" alt="Upload Image">
+                        <input type="file" id="productImage" name="productImage" accept="image/*" multiple onchange="displaySelectedImage(event)">
+                    </label>
+                </div>
+                <div class="mb-9">
+                    <label for="title" class="block text-gray-700">Title</label>
+                    <input type="text" id="title" name="title" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-9">
+                    <label for="expiryDate" class="block text-gray-700">Expiry Date</label>
+                    <input type="date" id="expiryDate" name="expiryDate" class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="w-full px-4 py-2 bg-teal-500 text-white rounded-md hover:bg-teal-700">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

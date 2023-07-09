@@ -266,11 +266,19 @@ def account():
     )
     user_listings = cursor.fetchall()
 
+    # Retrieve the user's first name
+    cursor.execute(
+        "SELECT first_name FROM users WHERE id = %s",
+        (session['user_id'],)
+    )
+    first_name = cursor.fetchone()[0]
+
     # Close the database connection
     cursor.close()
     conn.close()
 
-    return render_template('account.html', user_listings=user_listings)
+    return render_template('account.html', first_name=first_name, user_listings=user_listings)
+
 
 
 if __name__ == '__main__':
