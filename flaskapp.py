@@ -99,34 +99,31 @@ def login():
 
         # Execute the database query to check user credentials
         cursor.execute(
-            "SELECT COUNT(*) FROM users WHERE email = %s AND password = %s",
+            "SELECT id, first_name, last_name, email FROM users WHERE email = %s AND password = %s",
             (email, password)
         )
         result = cursor.fetchone()
-        logger.info(f"result: {result}")
-        # Close the database connection
-
 
         if result is not None:
-            # Authentication successful, retrieve the first name
-            cursor.execute(
-                "SELECT first_name FROM users WHERE email = %s",
-                (email,)
-            )
-            first_name = cursor.fetchone()[0]
+            # Authentication successful, retrieve user data
+            user_id, first_name, last_name, email = result
 
-            # Set the session variable
+            # Set the session variables
+            session['user_id'] = user_id
             session['first_name'] = first_name
+            session['last_name'] = last_name
+            session['email'] = email
 
             cursor.close()
             conn.close()
 
-            return redirect(url_for('main', firstName=first_name))
+            return redirect(url_for('main'))
         else:
             # Authentication failed, return an error message
             return "Authentication failed. Please check your email and password."
 
     return render_template('login.html')
+
 
 
 @app.route('/main')
