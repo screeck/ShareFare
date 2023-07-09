@@ -241,7 +241,7 @@ def post_product():
 
 @app.route('/account')
 def account():
-    if 'id' not in session:
+    if 'user_id' not in session:
         return redirect(url_for('login'))
 
     # Connect to the PostgreSQL database
@@ -262,7 +262,7 @@ def account():
         "JOIN product_images ON products.id = product_images.product_id "
         "WHERE products.user_id = %s "
         "GROUP BY products.id",
-        (session['id'],)
+        (session['user_id'],)
     )
     user_listings = cursor.fetchall()
 
