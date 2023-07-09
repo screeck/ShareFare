@@ -218,7 +218,7 @@ def post_product():
         # Insert the product data into the database
         cursor.execute(
             "INSERT INTO products (user_id, title, date) VALUES (%s, %s, %s) RETURNING id",
-            (session['id'], title, expiry_date)
+            (session['user_id'], title, expiry_date)
         )
         product_id = cursor.fetchone()[0]
 
