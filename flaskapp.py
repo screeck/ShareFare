@@ -214,11 +214,16 @@ def post_product():
             sslmode='require'
         )
         cursor = conn.cursor()
-
+        # Retrieve the user_id from the users table
+        cursor.execute(
+        "SELECT id FROM users WHERE email = %s",
+        (session['email'],)
+        )
+        user_id = cursor.fetchone()[0]
         # Insert the product data into the database
         cursor.execute(
             "INSERT INTO products (user_id, title, date) VALUES (%s, %s, %s) RETURNING id",
-            (session['user_id'], title, expiry_date)
+            (user_id, title, expiry_date)
         )
         product_id = cursor.fetchone()[0]
 
