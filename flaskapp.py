@@ -266,18 +266,19 @@ def account():
     )
     user_listings = cursor.fetchall()
 
-    # Retrieve the user's first name
+    # Retrieve the user's first name, last name, and email
     cursor.execute(
-        "SELECT first_name FROM users WHERE id = %s",
+        "SELECT first_name, last_name, email FROM users WHERE id = %s",
         (session['user_id'],)
     )
-    first_name = cursor.fetchone()[0]
+    first_name, last_name, email = cursor.fetchone()
 
     # Close the database connection
     cursor.close()
     conn.close()
 
-    return render_template('account.html', first_name=first_name, user_listings=user_listings)
+    return render_template('account.html', first_name=first_name, last_name=last_name, email=email, user_listings=user_listings)
+
 
 
 
