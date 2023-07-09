@@ -239,6 +239,38 @@ def post_product():
     except Exception as e:
         return f"Error: {str(e)}"
 
+@app.route('/account')
+def account():
+    if 'id' not in session:
+        return redirect(url_for('login'))
+
+    # Connect to the PostgreSQL database
+    conn = psycopg2.connect(
+        host=db_host,
+        port=db_port,
+        dbname=db_name,
+        user=db_user,
+        password=db_password,
+        sslmode='require'
+    )
+    cursor = conn.cursor()
+
+    # Retrieve the user's listings
+    cursor.execute(
+        "SELECT products.id, products.title, products.date, ARRAY_AGG(product_images.image_url) "
+        "FROM products "
+        "JOIN product_images ON products.id = product_images.product_id "
+        "WHERE products.user_id = %s "
+        "GROUP BY products.id",
+        (session['id'],)
+    )
+    user_listings = cursor.fetchall()
+
+    # Close the database connection
+    cursor.close()
+    conn.close()
+
+    return render_template('account.html', user_listings=user_listings)
 
 
 if __name__ == '__main__':

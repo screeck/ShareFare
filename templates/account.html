@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SHAREFARE</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .product-listings {
+            text-align: center;
+            padding: 0 20px; /* Add left and right padding */
+            margin: 0 auto; /* Center the product listings section */
+            max-width: 1200px; /* Set a maximum width for the product listings section */
+        }
+
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-gap: 20px;
+            justify-items: center;
+        }
+
+        .product {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="py-6 px-6 flex justify-between items-center border-b border-gray-200">
+        <a href="/" class="text-3xl font-semibold">ShareFare</a>
+        <div class="relative group flex items-center">
+            <a href="#" class="mr-5 px-4 py-2 text-lg font-semibold bg-teal-500 text-white rounded-xl hover:bg-teal-700" onclick="showPopup()">List your product</a>
+            <img id="dropdownToggle" src="static/profile_default.png" alt="Profile Picture" class="w-8 h-8 rounded-full cursor-pointer" onclick="toggleDropdown()">
+            <div id="dropdownMenu" class="hidden dropdown-menu bg-white rounded-md shadow-md mt-2 py-2 w-48">
+                <!-- Dropdown menu content goes here -->
+                <a href="#" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Account</a>
+                <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-gray-800 hover:bg-gray-200">Log out</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto text-center mt-8">
+        <img src="static/profile_default.png" alt="Profile Picture" class="w-32 h-32 rounded-full mx-auto"> <!-- User's profile picture -->
+        <h2 class="text-2xl font-semibold">{{ first_name }} {{ last_name }}</h2> <!-- User's first name and last name -->
+        <p class="text-gray-500">{{ email }}</p> <!-- User's email -->
+    </div>
+
+    <div class="container mx-auto mt-8 product-listings">
+        <h2 class="text-3xl font-semibold">Your Listings</h2> <!-- Heading for user's listings -->
+        <div class="products">
+            {% for product in user_listings %}
+                <div class="product">
+                    {% for image_url in product[3] %}
+                        <img src="{{ image_url }}" alt="Product Image" class="shrink-image">
+                    {% endfor %}
+                    <h3>{{ product[1] }}</h3>
+                    <p>{{ product[2] }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
